@@ -34,6 +34,7 @@ import com.alibaba.csp.sentinel.adapter.gateway.common.rule.GatewayFlowRule;
 import com.alibaba.csp.sentinel.command.CommandConstants;
 import com.alibaba.csp.sentinel.config.SentinelConfig;
 import com.alibaba.csp.sentinel.command.vo.NodeVo;
+import com.alibaba.csp.sentinel.dashboard.config.LogInterceptorConfig;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.ApiDefinitionEntity;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.GatewayFlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.util.AsyncUtils;
@@ -62,6 +63,7 @@ import com.alibaba.csp.sentinel.dashboard.domain.cluster.config.ServerFlowConfig
 import com.alibaba.csp.sentinel.dashboard.domain.cluster.config.ServerTransportConfig;
 import com.alibaba.csp.sentinel.dashboard.util.VersionUtils;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -298,8 +300,14 @@ public class SentinelApiClient {
                 }
                 urlBuilder.append(queryString(params));
             }
+            if(LogInterceptorConfig.LogURL.contains(api)){
+                logger.info(String.format(">>>> 【GET】URL:%s",urlBuilder.toString()));
+            }
             return executeCommand(new HttpGet(urlBuilder.toString()));
         } else {
+            if(LogInterceptorConfig.LogURL.contains(api)){
+                logger.info(String.format(">>>> 【POST】URL:%s ,params:",urlBuilder.toString(), JSONObject.toJSONString(params)));
+            }
             // Using POST
             return executeCommand(
                     postRequest(urlBuilder.toString(), params, isSupportEnhancedContentType(app, ip, port)));
