@@ -311,6 +311,19 @@
         </pluginManagement>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>Nexus RELEASE Repository</name>
+            <url>http://192.168.0.26:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>Nexus SNAPSHOT Repository</name>
+            <url>http://192.168.0.26:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <profiles>
         <profile>
             <id>oss</id>
