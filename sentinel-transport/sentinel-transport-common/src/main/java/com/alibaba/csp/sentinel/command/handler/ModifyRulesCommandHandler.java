@@ -50,6 +50,7 @@ public class ModifyRulesCommandHandler implements CommandHandler<String> {
     @Override
     public CommandResponse<String> handle(CommandRequest request) {
         RecordLog.info(">>>> setRules ...");
+        System.out.println("********** setRules ...");
 
         // XXX from 1.7.2, force to fail when fastjson is older than 1.2.12
         // We may need a better solution on this.
@@ -105,7 +106,7 @@ public class ModifyRulesCommandHandler implements CommandHandler<String> {
             }
             return CommandResponse.ofSuccess(result);
         }
-        return CommandResponse.ofFailure(new IllegalArgumentException("invalid type"));
+        return CommandResponse.ofFailure(new IllegalArgumentException("invalid type ..."));
     }
 
     /**
