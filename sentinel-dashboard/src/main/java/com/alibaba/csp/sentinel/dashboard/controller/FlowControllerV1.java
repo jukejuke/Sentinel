@@ -270,7 +270,7 @@ public class FlowControllerV1 {
 
     private CompletableFuture<Void> publishRules(String app, String ip, Integer port) {
         List<FlowRuleEntity> rules = repository.findAllByMachine(MachineInfo.of(app, ip, port));
-        logger.info(String.format(">>>> 【publishRules】app:%s ,ip:%s ,port:%d ,rules:%s"),app,ip,port,JSONObject.toJSONString(rules));
+        logger.info(String.format(">>>> 【publishRules】app:%s ,ip:%s ,port:%d ,rules:%s",app,ip,port,JSONObject.toJSONString(rules)));
         return sentinelApiClient.setFlowRuleOfMachineAsync(app, ip, port, rules);
     }
 }

@@ -306,7 +306,7 @@ public class SentinelApiClient {
             return executeCommand(new HttpGet(urlBuilder.toString()));
         } else {
             if(LogInterceptorConfig.LogURL.contains(api)){
-                logger.info(String.format(">>>> 【POST】URL:%s ,params:",urlBuilder.toString(), JSONObject.toJSONString(params)));
+                logger.info(String.format(">>>> 【POST】URL:%s ,params:%s",urlBuilder.toString(), JSONObject.toJSONString(params)));
             }
             // Using POST
             return executeCommand(

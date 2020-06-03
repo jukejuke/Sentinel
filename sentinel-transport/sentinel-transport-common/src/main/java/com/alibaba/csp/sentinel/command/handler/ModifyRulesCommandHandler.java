@@ -49,6 +49,8 @@ public class ModifyRulesCommandHandler implements CommandHandler<String> {
 
     @Override
     public CommandResponse<String> handle(CommandRequest request) {
+        RecordLog.info(">>>> setRules ...");
+
         // XXX from 1.7.2, force to fail when fastjson is older than 1.2.12
         // We may need a better solution on this.
         if (VersionUtil.fromVersionString(JSON.VERSION) < FASTJSON_MINIMAL_VER) {
@@ -57,8 +59,10 @@ public class ModifyRulesCommandHandler implements CommandHandler<String> {
                     + "\" introduced in application is too old, you need fastjson-1.2.12 at least."));
         }
         String type = request.getParam("type");
+        RecordLog.info(">>>> type："+type);
         // rule data in get parameter
         String data = request.getParam("data");
+        RecordLog.info(">>>> data："+data);
         if (StringUtil.isNotEmpty(data)) {
             try {
                 data = URLDecoder.decode(data, "utf-8");
