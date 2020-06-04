@@ -321,6 +321,7 @@ public class SentinelApiClient {
                 && RocketMQConfig.MQPath.contains(api)){
                 DefaultMQProducer producer = new
                         DefaultMQProducer(RocketMQConfig.getGroupName());
+                producer.setNamesrvAddr(RocketMQConfig.getNameSrvAddr());
                 try {
                     producer.start();
                     try {

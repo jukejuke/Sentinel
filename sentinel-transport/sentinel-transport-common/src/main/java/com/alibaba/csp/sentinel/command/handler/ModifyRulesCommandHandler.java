@@ -80,6 +80,7 @@ public class ModifyRulesCommandHandler implements CommandHandler<String> {
         if (FLOW_RULE_TYPE.equalsIgnoreCase(type)) {
             List<FlowRule> flowRules = JSONArray.parseArray(data, FlowRule.class);
             FlowRuleManager.loadRules(flowRules);
+            RecordLog.info("--------------------- split line-------------------------");
             if (!writeToDataSource(getFlowDataSource(), flowRules)) {
                 result = WRITE_DS_FAILURE_MSG;
             }

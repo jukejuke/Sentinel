@@ -96,7 +96,7 @@ public final class FlowRuleUtil {
 
         for (FlowRule rule : list) {
             if (!isValidRule(rule)) {
-                RecordLog.warn("[FlowRuleManager] Ignoring invalid flow rule when loading new flow rules: " + rule);
+                RecordLog.warn("^[FlowRuleManager] Ignoring invalid flow rule when loading new flow rules: " + rule);
                 continue;
             }
             if (filter != null && !filter.test(rule)) {
