@@ -83,6 +83,7 @@ public class ModifyRulesCommandHandler implements CommandHandler<String> {
             if (!writeToDataSource(getFlowDataSource(), flowRules)) {
                 result = WRITE_DS_FAILURE_MSG;
             }
+            RecordLog.info(String.format(">>>> 【FLOW_RULE_TYPE】Handler Return:%s",result));
             return CommandResponse.ofSuccess(result);
         } else if (AUTHORITY_RULE_TYPE.equalsIgnoreCase(type)) {
             List<AuthorityRule> rules = JSONArray.parseArray(data, AuthorityRule.class);
@@ -90,6 +91,8 @@ public class ModifyRulesCommandHandler implements CommandHandler<String> {
             if (!writeToDataSource(getAuthorityDataSource(), rules)) {
                 result = WRITE_DS_FAILURE_MSG;
             }
+
+            RecordLog.info(String.format(">>>> 【AUTHORITY_RULE_TYPE】Handler Return:%s",result));
             return CommandResponse.ofSuccess(result);
         } else if (DEGRADE_RULE_TYPE.equalsIgnoreCase(type)) {
             List<DegradeRule> rules = JSONArray.parseArray(data, DegradeRule.class);
@@ -97,6 +100,8 @@ public class ModifyRulesCommandHandler implements CommandHandler<String> {
             if (!writeToDataSource(getDegradeDataSource(), rules)) {
                 result = WRITE_DS_FAILURE_MSG;
             }
+
+            RecordLog.info(String.format(">>>> 【DEGRADE_RULE_TYPE】Handler Return:%s",result));
             return CommandResponse.ofSuccess(result);
         } else if (SYSTEM_RULE_TYPE.equalsIgnoreCase(type)) {
             List<SystemRule> rules = JSONArray.parseArray(data, SystemRule.class);
@@ -104,6 +109,8 @@ public class ModifyRulesCommandHandler implements CommandHandler<String> {
             if (!writeToDataSource(getSystemSource(), rules)) {
                 result = WRITE_DS_FAILURE_MSG;
             }
+
+            RecordLog.info(String.format(">>>> 【SYSTEM_RULE_TYPE】Handler Return:%s",result));
             return CommandResponse.ofSuccess(result);
         }
         return CommandResponse.ofFailure(new IllegalArgumentException("invalid type ..."));
