@@ -334,17 +334,22 @@ public class SentinelApiClient {
                         logger.info(">>>> Send MQ OK...");
                     } catch (RemotingException e) {
                         e.printStackTrace();
+                        logger.error("SEND:"+e.getMessage(),e);
                     } catch (MQBrokerException e) {
                         e.printStackTrace();
+                        logger.error("SEND:"+e.getMessage(),e);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                        logger.error("SEND:"+e.getMessage(),e);
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
+                        logger.error("SEND:"+e.getMessage(),e);
                     } finally {
                         producer.shutdown();
                     }
                 } catch (MQClientException e) {
                     e.printStackTrace();
+                    logger.error("START PRODUCER:"+e.getMessage(),e);
                 }
             }
             // Using POST
