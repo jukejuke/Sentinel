@@ -35,6 +35,7 @@ import com.alibaba.csp.sentinel.command.CommandConstants;
 import com.alibaba.csp.sentinel.config.SentinelConfig;
 import com.alibaba.csp.sentinel.command.vo.NodeVo;
 import com.alibaba.csp.sentinel.dashboard.config.LogInterceptorConfig;
+import com.alibaba.csp.sentinel.dashboard.config.RocketMQConfig;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.ApiDefinitionEntity;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.GatewayFlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.util.AsyncUtils;
@@ -64,6 +65,7 @@ import com.alibaba.csp.sentinel.dashboard.domain.cluster.config.ServerTransportC
 import com.alibaba.csp.sentinel.dashboard.util.VersionUtils;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -80,6 +82,13 @@ import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.impl.nio.reactor.IOReactorConfig;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.remoting.common.RemotingHelper;
+import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -307,6 +316,36 @@ public class SentinelApiClient {
         } else {
             if(LogInterceptorConfig.LogURL.contains(api)){
                 logger.info(String.format(">>>> 【POST】URL:%s ,params:%s",urlBuilder.toString(), JSONObject.toJSONString(params)));
+            }
+            if(StringUtils.equals(RocketMQConfig.getSendMQRulesFlag(),"1")
+                && RocketMQConfig.MQPath.contains(api)){
+                DefaultMQProducer producer = new
+                        DefaultMQProducer(RocketMQConfig.getGroupName());
+                try {
+                    producer.start();
+                    try {
+                        logger.info(">>>> Send MQ ING...");
+                        Message msg = new Message(RocketMQConfig.getRulesTopic(),
+                                "insert-rules",
+                                String.format("%s:%s",app,ip),
+                                JSONObject.toJSONString(params).getBytes(RemotingHelper.DEFAULT_CHARSET)
+                        );
+                        SendResult sendResult = producer.send(msg);
+                        logger.info(">>>> Send MQ OK...");
+                    } catch (RemotingException e) {
+                        e.printStackTrace();
+                    } catch (MQBrokerException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    } finally {
+                        producer.shutdown();
+                    }
+                } catch (MQClientException e) {
+                    e.printStackTrace();
+                }
             }
             // Using POST
             return executeCommand(
