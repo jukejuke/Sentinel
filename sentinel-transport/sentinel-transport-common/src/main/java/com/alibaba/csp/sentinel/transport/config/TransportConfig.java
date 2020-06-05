@@ -36,6 +36,11 @@ public class TransportConfig {
     public static final String HEARTBEAT_CLIENT_IP = "csp.sentinel.heartbeat.client.ip";
     public static final String HEARTBEAT_API_PATH = "csp.sentinel.heartbeat.api.path";
 
+    /**
+     * 停用API修改规则 0：否 1：是
+     */
+    public static final String STOP_APIRULE_MODIFYFLAG = "csp.sentinel.rules.api.rules.modify.flag";
+
     public static final String HEARTBEAT_DEFAULT_PATH = "/registry/machine";
 
     private static int runtimePort = -1;
@@ -175,5 +180,17 @@ public class TransportConfig {
             apiPath = "/" + apiPath;
         }
         return apiPath;
+    }
+
+    /**
+     * 停用API修改规则
+     * @return 0：否 1：是
+     */
+    public static String getStopApiruleModifyFlag(){
+        String stopApiRuleModifyFlag = SentinelConfig.getConfig(STOP_APIRULE_MODIFYFLAG);
+        if(StringUtil.isBlank(stopApiRuleModifyFlag)){
+            return "0";
+        }
+        return stopApiRuleModifyFlag;
     }
 }

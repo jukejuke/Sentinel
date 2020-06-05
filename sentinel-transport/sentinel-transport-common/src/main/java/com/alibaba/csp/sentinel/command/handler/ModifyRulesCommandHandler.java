@@ -24,6 +24,7 @@ import com.alibaba.csp.sentinel.command.CommandResponse;
 import com.alibaba.csp.sentinel.command.annotation.CommandMapping;
 import com.alibaba.csp.sentinel.datasource.WritableDataSource;
 import com.alibaba.csp.sentinel.log.RecordLog;
+import com.alibaba.csp.sentinel.transport.config.TransportConfig;
 import com.alibaba.csp.sentinel.util.StringUtil;
 import com.alibaba.csp.sentinel.util.VersionUtil;
 import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRule;
@@ -78,13 +79,17 @@ public class ModifyRulesCommandHandler implements CommandHandler<String> {
         String result = "success";
 
         if (FLOW_RULE_TYPE.equalsIgnoreCase(type)) {
-            List<FlowRule> flowRules = JSONArray.parseArray(data, FlowRule.class);
-            RecordLog.info("--------------------- split line change flowRules--------");
-            RecordLog.info(String.format(">>>> flowRules:%s",JSON.toJSONString(flowRules)));
-            FlowRuleManager.loadRules(flowRules);
-            RecordLog.info("--------------------- split line-------------------------");
-            if (!writeToDataSource(getFlowDataSource(), flowRules)) {
-                result = WRITE_DS_FAILURE_MSG;
+            if(StringUtil.equals("0", TransportConfig.getStopApiruleModifyFlag())) {
+                List<FlowRule> flowRules = JSONArray.parseArray(data, FlowRule.class);
+                RecordLog.info("--------------------- split line change flowRules--------");
+                RecordLog.info(String.format(">>>> flowRules:%s", JSON.toJSONString(flowRules)));
+                FlowRuleManager.loadRules(flowRules);
+                RecordLog.info("--------------------- split line-------------------------");
+                if (!writeToDataSource(getFlowDataSource(), flowRules)) {
+                    result = WRITE_DS_FAILURE_MSG;
+                }
+            }else{
+                RecordLog.info(">>>> 【FLOW_RULE_TYPE】 stop rule handle...");
             }
             RecordLog.info(String.format(">>>> 【FLOW_RULE_TYPE】Handler Return:%s",result));
             return CommandResponse.ofSuccess(result);
