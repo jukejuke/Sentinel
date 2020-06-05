@@ -79,6 +79,8 @@ public class ModifyRulesCommandHandler implements CommandHandler<String> {
 
         if (FLOW_RULE_TYPE.equalsIgnoreCase(type)) {
             List<FlowRule> flowRules = JSONArray.parseArray(data, FlowRule.class);
+            RecordLog.info("--------------------- split line change flowRules--------");
+            RecordLog.info(String.format(">>>> flowRules:%s",JSON.toJSONString(flowRules)));
             FlowRuleManager.loadRules(flowRules);
             RecordLog.info("--------------------- split line-------------------------");
             if (!writeToDataSource(getFlowDataSource(), flowRules)) {
