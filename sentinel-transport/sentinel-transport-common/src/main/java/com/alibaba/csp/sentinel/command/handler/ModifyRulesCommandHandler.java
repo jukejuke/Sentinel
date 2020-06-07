@@ -37,6 +37,8 @@ import com.alibaba.csp.sentinel.slots.system.SystemRuleManager;
 import com.alibaba.csp.sentinel.slots.system.SystemRule;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import static com.alibaba.csp.sentinel.transport.util.WritableDataSourceRegistry.*;
 
@@ -83,6 +85,11 @@ public class ModifyRulesCommandHandler implements CommandHandler<String> {
                 List<FlowRule> flowRules = JSONArray.parseArray(data, FlowRule.class);
                 RecordLog.info("--------------------- split line change flowRules--------");
                 RecordLog.info(String.format(">>>> flowRules:%s", JSON.toJSONString(flowRules)));
+                if(flowRules.size()>0 &&  StringUtil.isEmpty(flowRules.get(0).getResource())){
+                    flowRules = new Gson().fromJson(data,new TypeToken<List<FlowRule>>(){}.getType());
+                    RecordLog.info("--------------------- (GSON)split line change flowRules--------");
+                    RecordLog.info(String.format(">>>> (GSON)flowRules:%s", JSON.toJSONString(flowRules)));
+                }
                 FlowRuleManager.loadRules(flowRules);
                 RecordLog.info("--------------------- split line-------------------------");
                 if (!writeToDataSource(getFlowDataSource(), flowRules)) {

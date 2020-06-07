@@ -21,4 +21,9 @@ public class common {
         List<FlowRule> flowRules = JSONArray.parseArray(data, FlowRule.class);
         System.out.println(flowRules);
     }
+
+    @Test
+    public void test2(){
+
+    }
 }
