@@ -65,6 +65,7 @@ public class FlowRuleManagerUtils {
      * @param appName 应用名
      */
     public static boolean loadRules(String driver,String url,String user,String password,String dbName,String appName){
+        RecordLog.info(">>>> [FlowRuleManagerUtils] loadRules DB...");
         if(dbName==null){
             dbName = "";
         }
