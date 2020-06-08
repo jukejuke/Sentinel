@@ -42,15 +42,33 @@ public class FlowRuleManagerUtils {
         return true;
     }
 
+
     /**
      * 记载流控规则（FROM DB）
      * @param driver
      * @param url
      * @param user
      * @param password
-     * @param appName
+     * @param appName 应用名
      */
     public static boolean loadRules(String driver,String url,String user,String password,String appName){
+        return loadRules(driver,url,user,password,"",password);
+    }
+
+    /**
+     * 记载流控规则（FROM DB）
+     * @param driver
+     * @param url
+     * @param user
+     * @param password
+     * @param dbName 数据库名（例： xingrui_crm.）
+     * @param appName 应用名
+     */
+    public static boolean loadRules(String driver,String url,String user,String password,String dbName,String appName){
+        if(dbName==null){
+            dbName = "";
+        }
+
         Connection conn = null;
         Statement stmt = null;
         try{
@@ -61,7 +79,7 @@ public class FlowRuleManagerUtils {
             stmt = conn.createStatement();
             StringBuffer sqlBuffer = new StringBuffer();
             sqlBuffer.append(" SELECT id,app_name appName,`type`,rules,mq_storetime mqStoretime ");
-            sqlBuffer.append(" FROM sentinel_rules ");
+            sqlBuffer.append(" FROM "+dbName+"sentinel_rules ");
             sqlBuffer.append(String.format(" WHERE app_name = '%s' AND stat = '1'",appName));
             ResultSet rs = stmt.executeQuery(sqlBuffer.toString());
 
@@ -88,11 +106,15 @@ public class FlowRuleManagerUtils {
         }finally{
 
             try{
-                if(stmt!=null) stmt.close();
+                if(stmt!=null) {
+                    stmt.close();
+                }
             }catch(SQLException se2){
             }
             try{
-                if(conn!=null) conn.close();
+                if(conn!=null) {
+                    conn.close();
+                }
             }catch(SQLException se){
                 se.printStackTrace();
             }
