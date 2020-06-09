@@ -103,8 +103,10 @@ public class FlowRuleManagerUtils {
 
             return true;
         }catch(SQLException se){
+            RecordLog.error(">>>> [FlowRuleManagerUtils]"+se.getMessage(),se);
             se.printStackTrace();
         }catch(Exception e){
+            RecordLog.error(">>>> [FlowRuleManagerUtils]"+e.getMessage(),e);
             e.printStackTrace();
         }finally{
 
