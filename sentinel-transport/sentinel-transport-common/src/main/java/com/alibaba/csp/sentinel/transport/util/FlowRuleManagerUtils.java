@@ -11,7 +11,7 @@ import com.alibaba.fastjson.JSONArray;
 import java.sql.*;
 import java.util.List;
 
-import static com.alibaba.csp.sentinel.transport.util.WritableDataSourceRegistry.getFlowDataSource;
+import static com.alibaba.csp.sentinel.transport.util.WritableDataSourceRegistry.*;
 
 /**
  * 流控工具
