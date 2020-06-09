@@ -82,8 +82,10 @@ public class FlowRuleManagerUtils {
             sqlBuffer.append(" SELECT id,app_name appName,`type`,rules,mq_storetime mqStoretime ");
             sqlBuffer.append(" FROM "+dbName+"sentinel_rules ");
             sqlBuffer.append(String.format(" WHERE app_name = '%s' AND stat = '1'",appName));
+            RecordLog.info(String.format(">>>> [FlowRuleManagerUtils] SQL:%s",sqlBuffer.toString()));
             ResultSet rs = stmt.executeQuery(sqlBuffer.toString());
 
+            RecordLog.info(">>>> [FlowRuleManagerUtils] SQL EXECUTE...");
             while(rs.next()){
                 int id  = rs.getInt("id");
                 String type = rs.getString("type");
