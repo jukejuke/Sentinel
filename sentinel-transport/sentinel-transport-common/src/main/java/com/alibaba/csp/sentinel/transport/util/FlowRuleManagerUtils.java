@@ -52,7 +52,7 @@ public class FlowRuleManagerUtils {
      * @param appName 应用名
      */
     public static boolean loadRules(String driver,String url,String user,String password,String appName){
-        return loadRules(driver,url,user,password,"",password);
+        return loadRules(driver,url,user,password,"",appName);
     }
 
     /**
