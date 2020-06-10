@@ -67,11 +67,11 @@ public class RuleManagerUtils {
                 if(StringUtil.equalsIgnoreCase("flow",type)){
                     FlowRuleManagerUtils.loadRules(rules);
                 }else if(StringUtil.equalsIgnoreCase("degrade",type)){
-
+                    DegradeRuleManagerUtils.loadRules(rules);
                 }else if(StringUtil.equalsIgnoreCase("system",type)){
-
+                    SystemRuleManagerUtils.loadRules(rules);
                 }else if(StringUtil.equalsIgnoreCase("authority",type)){
-
+                    AuthorityRuleManagerUtils.loadRules(rules);
                 }
 
             }

@@ -35,14 +35,14 @@ public class FlowRuleManagerUtils {
         try {
             WritableDataSource<List<FlowRule>> dataSource = getFlowDataSource();
             if(dataSource == null){
-                RecordLog.info(">>>> @DataSource NULL...");
+                RecordLog.info(">>>> [FlowRuleManagerUtils] @DataSource NULL...");
             }
             dataSource.write(flowRules);
         } catch (Exception e) {
-            RecordLog.warn("@Write data source failed", e);
+            RecordLog.warn("[FlowRuleManagerUtils] @Write data source failed", e);
             return false;
         }
-        RecordLog.warn("loadRules Success!");
+        RecordLog.warn("[FlowRuleManagerUtils] loadRules Success!");
         return true;
     }
 
