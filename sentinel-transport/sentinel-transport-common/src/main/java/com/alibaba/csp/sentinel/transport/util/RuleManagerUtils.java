@@ -1,51 +1,19 @@
 package com.alibaba.csp.sentinel.transport.util;
 
-import com.alibaba.csp.sentinel.datasource.WritableDataSource;
 import com.alibaba.csp.sentinel.log.RecordLog;
-import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
-import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import com.alibaba.csp.sentinel.util.StringUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 
 import java.sql.*;
-import java.util.List;
-
-import static com.alibaba.csp.sentinel.transport.util.WritableDataSourceRegistry.*;
 
 /**
- * 流控工具
+ * 规则工具
  * @author Yaosh
  * @version 1.0
  * @commpany 星瑞国际
- * @date 2020/6/5 10:03
+ * @date 2020/6/10 8:27
  * @return
  */
-public class FlowRuleManagerUtils {
-
-
-    /**
-     * 加载流控规则
-     * @param data
-     */
-    public static boolean loadRules(String data){
-        List<FlowRule> flowRules = JSONArray.parseArray(data, FlowRule.class);
-        RecordLog.info(String.format(">>>> [FlowRuleManagerUtils] flowRules:%s", JSON.toJSONString(flowRules)));
-        FlowRuleManager.loadRules(flowRules);
-        try {
-            WritableDataSource<List<FlowRule>> dataSource = getFlowDataSource();
-            if(dataSource == null){
-                RecordLog.info(">>>> @DataSource NULL...");
-            }
-            dataSource.write(flowRules);
-        } catch (Exception e) {
-            RecordLog.warn("@Write data source failed", e);
-            return false;
-        }
-        RecordLog.warn("loadRules Success!");
-        return true;
-    }
-
+public class RuleManagerUtils {
 
     /**
      * 记载流控规则（FROM DB）
