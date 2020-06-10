@@ -33,7 +33,11 @@ public class FlowRuleManagerUtils {
         RecordLog.info(String.format(">>>> [FlowRuleManagerUtils] flowRules:%s", JSON.toJSONString(flowRules)));
         FlowRuleManager.loadRules(flowRules);
         try {
-            getFlowDataSource().write(flowRules);
+            WritableDataSource<List<FlowRule>> dataSource = getFlowDataSource();
+            if(dataSource == null){
+                RecordLog.info(">>>> @DataSource NULL...");
+            }
+            dataSource.write(flowRules);
         } catch (Exception e) {
             RecordLog.warn("@Write data source failed", e);
             return false;
